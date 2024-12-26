@@ -6,28 +6,16 @@ import {
   Typography,
 } from "@suid/material";
 import { createSignal } from "solid-js";
-import { Action, makeAction, makeActionGroupFromAction } from "~/api/actions";
-import { ActionGrid } from "~/components/actionGrid";
+import { Channel } from "~/api/programs";
+import { ChannelGrid } from "~/components/channelGrid";
+
 import { MasterArmCard } from "~/components/masterArmCard";
 import { THEME } from "~/components/theme";
 
-const MY_ACTIONS: Action[] = [...Array(6).keys()].map((_: number, i: number) =>
-  makeAction("Channel " + (i + 1).toString(), i + 1),
-);
-
-const DEFAULT_ACTION_SET = {
-  actionGroups: MY_ACTIONS.map(makeActionGroupFromAction),
-  name: "Channels",
-};
-
-const MY_CUSTOM_ACTIONS: Action[] = [...Array(2).keys()].map(
-  (_: number, i: number) => makeAction("Program " + (i + 1).toString(), i + 1),
-);
-
-const CUSTOM_GROUP_ACTION_SET = {
-  actionGroups: MY_CUSTOM_ACTIONS.map(makeActionGroupFromAction),
-  name: "Programs",
-};
+const MOCK_DEVICE_NAME = "MOCK_DEVICE_NAME";
+const MOCK_CHANNELS: Channel[] = [...Array(6).keys()].map((i) => {
+  return { channelNumber: i, deviceName: MOCK_DEVICE_NAME, connected: i == 2 };
+});
 
 export default function Home() {
   let [isArmed, setIsArmed] = createSignal(false);
@@ -35,18 +23,22 @@ export default function Home() {
     <main>
       <ThemeProvider theme={THEME}>
         <CssBaseline />
-        <MasterArmCard isArmed={isArmed()} toggleArmStatus={() => {setIsArmed(!isArmed())}} />
-
-        <ActionGrid
-          actionSet={DEFAULT_ACTION_SET}
-          onFireActionGroup={(actionGroup) => console.log("Firing!!! ")}
+        <MasterArmCard
           isArmed={isArmed()}
+          toggleArmStatus={() => {
+            setIsArmed(!isArmed());
+          }}
         />
 
-        <ActionGrid
-          actionSet={CUSTOM_GROUP_ACTION_SET}
-          onFireActionGroup={(actionGroup) => console.log("Firing!!! ")}
-          isArmed={true}
+        <ChannelGrid
+          channels={MOCK_CHANNELS}
+          onFireChannel={(channel) =>
+            console.log(
+              `Firing channel ${channel.channelNumber} on device ${channel.deviceName}`,
+            )
+          }
+          isArmed={isArmed()}
+          name={MOCK_DEVICE_NAME}
         />
 
         <AppBar
