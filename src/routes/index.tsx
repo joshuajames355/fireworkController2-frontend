@@ -5,24 +5,29 @@ import {
   Toolbar,
   Typography,
 } from "@suid/material";
-import { createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import { Channel, Program } from "~/api/programs";
 import { ChannelGrid } from "~/components/channelGrid";
 
 import { MasterArmCard } from "~/components/masterArmCard";
+import { EditProgramModel } from "~/components/programEditor";
 import { ProgramGrid } from "~/components/programGrid";
 import { THEME } from "~/components/theme";
 
 const MOCK_DEVICE_NAME = "MOCK_DEVICE_NAME";
 const MOCK_CHANNELS: Channel[] = [...Array(6).keys()].map((i) => {
-  return { channelNumber: i, deviceName: MOCK_DEVICE_NAME, connected: i == 2 };
+  return {
+    channelNumber: i,
+    deviceName: MOCK_DEVICE_NAME,
+    connected: i == 2,
+  };
 });
 
 const MOCK_PROGRAMS: Program[] = [
   {
     name: "Fire 1+6",
     entries: [
-      { channel: 0, delayMs: 0 },
+      { channel: 0, delayMs: 200 },
       { channel: 5, delayMs: 0 },
     ],
   },
@@ -30,6 +35,28 @@ const MOCK_PROGRAMS: Program[] = [
 
 export default function Home() {
   let [isArmed, setIsArmed] = createSignal(false);
+
+  let [isEditProgramModalOpened, setIsEditProgramModalOpened] =
+    createSignal(false);
+
+  let [editProgramModelNumber, setEditProgramModelNumber] = createSignal(0);
+
+  let [editProgramModelProgram, setEditProgramModelProgram] = createSignal<
+    Program | undefined
+  >();
+
+  let sortedEditProgramModelProgram = createMemo<Program | undefined>(() => {
+    let program = editProgramModelProgram();
+    if (program == undefined) {
+      return undefined;
+    }
+
+    return {
+      name: program.name,
+      entries: program.entries.toSorted((a, b) => a.delayMs - b.delayMs),
+    };
+  });
+
   return (
     <main>
       <ThemeProvider theme={THEME}>
@@ -58,6 +85,19 @@ export default function Home() {
             console.log(`Firing program ${program.name}`)
           }
           isArmed={isArmed()}
+          onEditProgram={(program, number) => {
+            setIsEditProgramModalOpened(true);
+            setEditProgramModelProgram(program);
+            setEditProgramModelNumber(number);
+          }}
+        />
+
+        <EditProgramModel
+          isOpen={isEditProgramModalOpened()}
+          onClose={() => setIsEditProgramModalOpened(false)}
+          onSubmit={() => {}}
+          programNumber={editProgramModelNumber()}
+          program={sortedEditProgramModelProgram()}
         />
 
         <AppBar

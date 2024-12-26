@@ -1,14 +1,6 @@
-import {
-  Grid,
-  Paper,
-  Typography,
-  Divider,
-  Card,
-  CardContent,
-} from "@suid/material";
-import { Channel, Program } from "~/api/programs";
-import { ChannelCard } from "./channelCard";
-import { For } from "solid-js";
+import { Grid, Paper, Typography, Divider } from "@suid/material";
+import { Program } from "~/api/programs";
+import { Accessor, For } from "solid-js";
 import { ProgramCard } from "./programCard";
 import { AddProgramCard } from "./addProgramCard";
 
@@ -16,6 +8,7 @@ export interface ProgramGridProps {
   onFireProgram: (program: Program) => void;
   isArmed: boolean;
   programs: Program[];
+  onEditProgram: (program: Program | undefined, number: number) => void;
 }
 
 export function ProgramGrid(props: ProgramGridProps) {
@@ -27,13 +20,14 @@ export function ProgramGrid(props: ProgramGridProps) {
       <Divider sx={{ marginY: 2 }} />
       <Grid container spacing={2}>
         <For each={props.programs}>
-          {(program: Program) => {
+          {(program: Program, i: Accessor<number>) => {
             return (
               <Grid item>
                 <ProgramCard
                   onFire={() => props.onFireProgram(program)}
                   isArmed={props.isArmed}
                   program={program}
+                  onEdit={() => props.onEditProgram(program, i())}
                 />
               </Grid>
             );
@@ -41,7 +35,11 @@ export function ProgramGrid(props: ProgramGridProps) {
         </For>
 
         <Grid item>
-          <AddProgramCard />
+          <AddProgramCard
+            onClick={() =>
+              props.onEditProgram(undefined, props.programs.length)
+            }
+          />
         </Grid>
       </Grid>
     </Paper>

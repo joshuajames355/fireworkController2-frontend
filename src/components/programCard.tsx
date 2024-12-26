@@ -16,6 +16,7 @@ export interface ProgramCardProps {
   program: Program;
   onFire: () => void;
   isArmed: boolean;
+  onEdit: () => void;
 }
 
 export function ProgramCard(props: ProgramCardProps) {
@@ -33,7 +34,7 @@ export function ProgramCard(props: ProgramCardProps) {
           <Typography component="div" variant="h5">
             {props.program.name}
           </Typography>
-          <IconButton>
+          <IconButton onClick={props.onEdit}>
             <Edit />
           </IconButton>
         </Box>
