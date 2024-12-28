@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@suid/material";
 import RocketLaunchIcon from "@suid/icons-material/RocketLaunch";
-import { Program } from "~/api/programs";
+import { Program } from "~/api/types";
 import { Edit } from "@suid/icons-material";
 
 export interface ProgramCardProps {

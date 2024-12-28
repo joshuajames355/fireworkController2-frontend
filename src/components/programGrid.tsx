@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography, Divider } from "@suid/material";
-import { Program } from "~/api/programs";
+import { Program } from "~/api/types";
 import { Accessor, For } from "solid-js";
 import { ProgramCard } from "./programCard";
 import { AddProgramCard } from "./addProgramCard";

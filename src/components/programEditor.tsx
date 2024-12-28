@@ -18,7 +18,7 @@ import {
   useTheme,
 } from "@suid/material";
 import { createEffect, createSignal, For } from "solid-js";
-import { Program, ProgramEntry } from "~/api/programs";
+import { Program, ProgramEntry } from "~/api/types";
 
 export interface EditProgramModelProps {
   isOpen: boolean;

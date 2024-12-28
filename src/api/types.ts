@@ -13,3 +13,10 @@ export interface ProgramEntry {
   channel: number;
   delayMs: number;
 }
+
+export interface DeviceStatus {
+  deviceName: string;
+  channels: Channel[];
+  programs: Program[];
+  connected: boolean; //If the device is currently connected to the server
+}

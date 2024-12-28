@@ -9,7 +9,7 @@ import {
   Box,
 } from "@suid/material";
 import RocketLaunchIcon from "@suid/icons-material/RocketLaunch";
-import { Channel } from "~/api/programs";
+import { Channel } from "~/api/types";
 import { Power, PowerOff } from "@suid/icons-material";
 
 export interface ChannelCardProps {

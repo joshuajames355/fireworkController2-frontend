@@ -1,6 +1,6 @@
 // @refresh reload
 import { createHandler, StartServer } from "@solidjs/start/server";
-import { initTcpServer } from "./api/launcher";
+import { initTcpServer } from "./api/launcherServer";
 
 export default createHandler(() => {
   initTcpServer().catch(() => {

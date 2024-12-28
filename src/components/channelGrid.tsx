@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography, Divider } from "@suid/material";
-import { Channel } from "~/api/programs";
+import { Channel } from "~/api/types";
 import { ChannelCard } from "./channelCard";
 import { For } from "solid-js";
 
