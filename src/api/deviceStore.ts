@@ -16,7 +16,6 @@ export async function initDataStore() {
 
     broadcast_channel.onmessage = (event) => {
       if (event.data.type == "statusRequest") {
-        console.log("sending!!!");
         broadcast_channel?.postMessage({ type: "statusUpdate", devices });
       }
     };

@@ -42,6 +42,7 @@ export async function initTcpServer() {
           console.log(
             `Closing connection from ${c.remoteAddress} due to timeout`,
           );
+          if (name) onDeviceDisconnected(name);
         };
 
         let timeoutHandle: NodeJS.Timeout | undefined = setTimeout(
@@ -59,7 +60,6 @@ export async function initTcpServer() {
         let data: Buffer<ArrayBufferLike> = Buffer.alloc(0);
 
         broadcast_channel.onmessage = (event) => {
-          console.log(`Received message ${JSON.stringify(event.data)}`);
           if (
             event.data.type === "fire" &&
             event.data.device === name &&
